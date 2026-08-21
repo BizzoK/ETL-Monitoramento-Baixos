@@ -24,7 +24,7 @@ jobs:
         pip install -r requirements.txt
 
     - name: Ligar o motor do robô
-      run: python scraper_selenium.py
+      run: python scraper.py
 
     - name: Salvar o banco de dados no repositório
       run: |
