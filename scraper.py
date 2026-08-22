@@ -135,6 +135,6 @@ conexao = sqlite3.connect('historico_precos.db')
 
 # if_exists='replace' para que ele zere a tabela a cada teste.
 # quando para produção, mudaremos para 'append' para acumular o histórico.
-df_final.to_sql('historico', con=conexao, if_exists='replace', index=False)
+df_final.to_sql('historico', con=conexao, if_exists='append', index=False)
 print("Dados salvos com sucesso na tabela.")
 conexao.close()
