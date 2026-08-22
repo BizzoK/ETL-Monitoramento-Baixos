@@ -5,6 +5,22 @@ import sqlite3
 st.set_page_config(page_title="Monitor de Baixos Tagima", layout="wide")
 st.title("Radar de Preços: Baixos Tagima (Mercado Livre)")
 
+st.markdown("""
+    <style>
+    .stSelectbox label p {
+        font-size: 20px !important;
+    }
+    
+    div[data-baseweb="select"] {
+        font-size: 18px !important;
+    }
+
+    [data-testid="stMetricLabel"] p {
+        font-size: 20px !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 @st.cache_data
 def carregar_dados():
     conexao = sqlite3.connect('historico_precos.db')
@@ -22,7 +38,7 @@ col1, col2 = st.columns([2, 1])
 with col1:
     modelos_disponiveis = df["Modelo_Padronizado"].unique().tolist()
     modelos_disponiveis.insert(0, "Todos")
-    modelo_selecionado = st.radio("Selecione o modelo:",modelos_disponiveis, horizontal=True)
+    modelo_selecionado = st.selectbox("Escolha o Modelo:", modelos_disponiveis)
 
 with col2:
     preco_maximo = st.sidebar.slider(
@@ -31,7 +47,7 @@ with col2:
         max_value=int(df['Preco'].max()),
         value=int(df['Preco'].max())
     )
-st.divider()
+#st.divider()
 
 
 # Aplicando os Filtros no Pandas
@@ -88,6 +104,8 @@ if not df_filtrado.empty:
     df_grafico.set_index('Data_Coleta', inplace=True)
 
     st.line_chart(df_grafico, y='Preco', height=250)
+st.divider()
+
 
 # Exibindo a Tabela Final
 st.subheader(f"Anúncios Encontrados")
@@ -113,3 +131,11 @@ st.dataframe(
     width='stretch',
     column_order=["Modelo_Padronizado", "Preco", "Link", "Modelo_Original", "Data_Coleta"]
 )
+
+st.divider() 
+rodape = """
+<div style="text-align: center; margin-top: 20px; color: #888;">
+    <p>Desenvolvido por <b>Leo Bizzocchi</b></p>
+</div>
+"""
+st.markdown(rodape, unsafe_allow_html=True)
