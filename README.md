@@ -13,6 +13,7 @@ Comprar instrumentos musicais exige pesquisa constante, pois os preços flutuam 
 Este projeto resolve esse problema através de um **Pipeline de Dados End-to-End**. Ele monitora, extrai, limpa, armazena e visualiza o histórico de preços de contrabaixos Tagima no Mercado Livre. O objetivo é criar uma ferramenta autônoma de inteligência de mercado que destaca as melhores ofertas do dia e mostra as tendências de alta ou queda de preços ao longo do tempo.
 
 **[Acesse o Dashboard Interativo na Nuvem Aqui](https://etl-monitoramento-baixos-leobizzocchi.streamlit.app/)**
+<img width="1816" height="657" alt="image" src="https://github.com/user-attachments/assets/5d2a7efb-0ccc-4749-becc-bc9333d1e543" />
 
 ## Arquitetura e Fluxo de Dados (ETL)
 
