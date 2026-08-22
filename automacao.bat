@@ -3,7 +3,7 @@ echo Iniciando a coleta de precos...
 cd "C:\Projetos pessoais\ETL Monitoramento Baixos"
 
 :: 1 Roda o robô
-python scraper.py
+python -u scraper.py
 
 :: 2 Sincroniza o banco de dados com o GitHub
 echo Sincronizando com o GitHub...

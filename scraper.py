@@ -13,7 +13,9 @@ sys.stdout.reconfigure(encoding='utf-8')
 # ------------------------------------------------------------------------------------------
 # EXTRAÇÃO - COLETANDO OS DADOS COM SELENIUM
 
+time.sleep(5)
 print("Ligando o robô...")
+print("Iniciando o ChromeDriver...", flush=True)
 servico = Service(ChromeDriverManager().install())
 opcoes = webdriver.ChromeOptions()
 #opcoes.add_argument('--headless')  # Executa o Chrome em modo headless (sem interface gráfica)
