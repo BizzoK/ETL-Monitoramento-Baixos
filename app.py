@@ -10,6 +10,9 @@ st.markdown("""
     .stSelectbox label p {
         font-size: 20px !important;
     }
+    .stSlider label p {
+            font-size: 20px !important;
+        }
     
     div[data-baseweb="select"] {
         font-size: 18px !important;
@@ -30,9 +33,6 @@ def carregar_dados():
 
 df = carregar_dados()
 
-# Filtros de busca
-st.sidebar.header("Filtros de Busca")
-
 col1, col2 = st.columns([2, 1])
 
 with col1:
@@ -41,13 +41,13 @@ with col1:
     modelo_selecionado = st.selectbox("Escolha o Modelo:", modelos_disponiveis)
 
 with col2:
-    preco_maximo = st.sidebar.slider(
+    preco_maximo = st.slider(
         "Preço Máximo (R$):",
         min_value=int(df['Preco'].min()),
         max_value=int(df['Preco'].max()),
         value=int(df['Preco'].max())
     )
-#st.divider()
+st.divider()
 
 
 # Aplicando os Filtros no Pandas
