@@ -16,14 +16,14 @@ sys.stdout.reconfigure(encoding='utf-8')
 print("Ligando o robô...")
 servico = Service(ChromeDriverManager().install())
 opcoes = webdriver.ChromeOptions()
-opcoes.add_argument('--headless')  # Executa o Chrome em modo headless (sem interface gráfica)
+#opcoes.add_argument('--headless')  # Executa o Chrome em modo headless (sem interface gráfica)
 navegador = webdriver.Chrome(service=servico, options=opcoes)
 
 url = 'https://lista.mercadolivre.com.br/instrumentos-musicais/baixo-tagima'
 navegador.get(url)
 
 lista_produtos = []
-total_paginas = 1
+total_paginas = 5
 print(f"Total de páginas a serem lidas: {total_paginas}")
 
 for pagina in range(1, total_paginas + 1):
@@ -37,11 +37,12 @@ for pagina in range(1, total_paginas + 1):
     for anuncio in anuncios:
         titulo_tag = anuncio.find('a', class_='poly-component__title') or anuncio.find('h3')
         titulo = titulo_tag.text if titulo_tag else 'Sem título'
-        
+
+        link = titulo_tag['href'] if (titulo_tag and titulo_tag.has_attr('href')) else 'Sem link'
         preco_tag = anuncio.find('span', class_='andes-money-amount__fraction')
         preco = preco_tag.text if preco_tag else '0'
         
-        lista_produtos.append({'Modelo Original': titulo, 'Preco Bruto': preco})
+        lista_produtos.append({'Modelo_Original': titulo, 'Preco_Bruto': preco, 'Link': link})
 
     # clique na próxima página usando JS direto no DOM
     if pagina < total_paginas: 
@@ -71,16 +72,18 @@ print(df)
 print("\nPadronizando os modelos com RapidFuzz...")
 
 # Limpeza do preço
-df['Preco Limpo'] = df['Preco Bruto'].str.replace('.', '').str.replace(',', '.').astype(float)
+df['Preco'] = df['Preco_Bruto'].str.replace('.', '').str.replace(',', '.').astype(float)
 
 # Lista Mestra
 modelos_oficiais = [
     "Tagima TW-65",
     "Tagima TW-66",
     "Tagima TW-73",
+    "Tagima MB-50",
     "Tagima Millenium 4",
     "Tagima Millenium 5",
     "Tagima TBM-5",
+    "Tagima TBM-4",
     "Tagima Tjb-5",
     "Tagima Tjb-4"
 ]
@@ -103,14 +106,15 @@ def padronizar_com_fuzz(nome_sujo):
     else:
         return 'Outros modelos'
 
-df['Modelo Padronizado'] = df['Modelo Original'].apply(padronizar_com_fuzz)
-df['Data Coleta'] = date.today().strftime('%d/%m/%Y')
+df['Modelo_Padronizado'] = df['Modelo_Original'].apply(padronizar_com_fuzz)
+df['Data_Coleta'] = date.today().strftime('%d/%m/%Y')
+
 
 pd.set_option('display.max_columns', None)
 pd.set_option('display.expand_frame_repr', False) # impede-a de quebrar a linha
 
 
-df_final = df[['Modelo Padronizado', 'Preco Limpo', 'Data Coleta']]
+df_final = df[['Modelo_Padronizado', 'Preco', 'Link', 'Data_Coleta', 'Modelo_Original']]
 
 print("\n=== BASE DE DADOS FINAL ===")
 print(df_final)
@@ -124,6 +128,6 @@ conexao = sqlite3.connect('historico_precos.db')
 
 # if_exists='replace' para que ele zere a tabela a cada teste.
 # quando para produção, mudaremos para 'append' para acumular o histórico.
-df_final.to_sql('historico', con=conexao, if_exists='append', index=False)
-print("Dados salvos com sucesso na tabela 'historico' do banco_teste.db!")
+df_final.to_sql('historico', con=conexao, if_exists='replace', index=False)
+print("Dados salvos com sucesso na tabela.")
 conexao.close()
