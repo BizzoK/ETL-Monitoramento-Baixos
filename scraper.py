@@ -16,14 +16,7 @@ sys.stdout.reconfigure(encoding='utf-8')
 print("Ligando o robô...")
 servico = Service(ChromeDriverManager().install())
 opcoes = webdriver.ChromeOptions()
-<<<<<<< HEAD
 #opcoes.add_argument('--headless')  # Executa o Chrome em modo headless (sem interface gráfica)
-=======
-opcoes.add_argument('--headless')  # executa o Chrome em modo headless (sem interface gráfica)
-opcoes.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
-opcoes.add_argument('--no-sandbox') # necessário para rodar no Linux do GitHub
-opcoes.add_argument('--disable-dev-shm-usage') # evita que o Chrome trave por falta de memória
->>>>>>> fc63f561ff161aacf0faa8cfae53fe58bee55855
 navegador = webdriver.Chrome(service=servico, options=opcoes)
 
 url = 'https://lista.mercadolivre.com.br/instrumentos-musicais/baixo-tagima'
